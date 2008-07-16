@@ -1,0 +1,13 @@
+--- plus4emu-1.2.5/gui/main.cpp.orig	2007-12-09 16:10:19.000000000 +0000
++++ plus4emu-1.2.5/gui/main.cpp	2008-01-11 16:20:15.000000000 +0000
+@@ -203,6 +203,10 @@
+ #ifdef __APPLE__
+           cmdLine += " -f";
+ #endif
++
++          if (cmdLine[0] != '"')
++              cmdLine = "\"" + cmdLine;
++
+           std::system(cmdLine.c_str());
+           f = new Plus4Emu::File(cfgFileName, true);
+         }

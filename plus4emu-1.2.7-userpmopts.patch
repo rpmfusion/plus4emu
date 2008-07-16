@@ -1,0 +1,21 @@
+--- SConstruct.orig	2008-07-13 15:57:39.000000000 +0200
++++ SConstruct	2008-07-13 15:58:02.000000000 +0200
+@@ -10,17 +10,7 @@
+ enableDebug = 0
+ buildRelease = 1
+ 
+-compilerFlags = ''
+-if buildRelease:
+-    if linux32CrossCompile or win32CrossCompile:
+-        compilerFlags = ' -march=pentium2 -mtune=generic '
+-if enableDebug and not buildRelease:
+-    compilerFlags = ' -Wno-long-long -Wshadow -g -O2 ' + compilerFlags
+-    compilerFlags = ' -Wall -W -ansi -pedantic ' + compilerFlags
+-else:
+-    compilerFlags = ' -Wall -O3 ' + compilerFlags
+-    compilerFlags = compilerFlags + ' -fno-inline-functions '
+-    compilerFlags = compilerFlags + ' -fomit-frame-pointer -ffast-math '
++compilerFlags = 'insertrpmflags'
+ 
+ fltkConfig = 'fltk-config'
+ 
