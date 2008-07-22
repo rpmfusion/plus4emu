@@ -1,11 +1,11 @@
 Name:           plus4emu
-Version:        1.2.7
+Version:        1.2.8
 Release:        1%{?dist}
 Summary:        Portable emulator of the Commodore 264 family of computers
 Group:          Applications/Emulators
 License:        GPLv2+
 URL:            http://plus4emu.sourceforge.net
-Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:        %{name}.png
 Source2:        README_%{name}.dribble
 Patch0:         %{name}-1.2.7-userpmopts.patch
@@ -101,6 +101,9 @@ fi
 
 
 %changelog
+* Tue Jul 22 2008 Andrea Musuruane <musuruan@gmail.com> 1.2.8-1
+- Updated to upstream 1.2.8
+
 * Sun Jul 13 2008 Andrea Musuruane <musuruan@gmail.com> 1.2.7-1
 - Updated to upstream 1.2.7
 
