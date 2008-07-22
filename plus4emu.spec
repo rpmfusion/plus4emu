@@ -101,7 +101,7 @@ fi
 
 
 %changelog
-* Tue Jul 22 2008 Andrea Musuruane <musuruan@gmail.com> - 1.2.8-1
+* Tue Jul 22 2008 Andrea Musuruane <musuruan@gmail.com> 1.2.8-1
 - Updated to upstream 1.2.8
 
 * Sun Jul 13 2008 Andrea Musuruane <musuruan@gmail.com> 1.2.7-1
