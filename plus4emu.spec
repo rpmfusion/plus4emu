@@ -1,5 +1,5 @@
 Name:           plus4emu
-Version:        1.2.8
+Version:        1.2.8.1
 Release:        1%{?dist}
 Summary:        Portable emulator of the Commodore 264 family of computers
 Group:          Applications/Emulators
@@ -101,6 +101,9 @@ fi
 
 
 %changelog
+* Thu Jul 24 2008 Andrea Musuruane <musuruan@gmail.com> 1.2.8.1-1
+- Updated to upstream 1.2.8.1
+
 * Tue Jul 22 2008 Andrea Musuruane <musuruan@gmail.com> 1.2.8-1
 - Updated to upstream 1.2.8
 
