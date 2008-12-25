@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Plus4emu FLI Converter
+Comment=High resolution interlaced FLI converter utility
+Exec=p4fliconv
+Icon=plus4emu
+Terminal=false
+Type=Application
+Categories=Graphics;2DGraphics;
+

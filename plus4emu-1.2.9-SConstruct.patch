@@ -1,6 +1,14 @@
---- SConstruct.orig	2008-07-13 15:57:39.000000000 +0200
-+++ SConstruct	2008-07-13 15:58:02.000000000 +0200
-@@ -10,17 +10,7 @@
+diff -dur plus4emu-1.2.9.orig/SConstruct plus4emu-1.2.9/SConstruct
+--- plus4emu-1.2.9.orig/SConstruct	2008-08-27 15:32:45.000000000 +0200
++++ plus4emu-1.2.9/SConstruct	2008-08-28 05:37:35.000000000 +0200
+@@ -1,5 +1,6 @@
+ # vim: syntax=python
+ 
++import os
+ import sys
+ 
+ win32CrossCompile = 0
+@@ -10,17 +11,7 @@
  enableDebug = 0
  buildRelease = 1
  
@@ -15,7 +23,7 @@
 -    compilerFlags = ' -Wall -O3 ' + compilerFlags
 -    compilerFlags = compilerFlags + ' -fno-inline-functions '
 -    compilerFlags = compilerFlags + ' -fomit-frame-pointer -ffast-math '
-+compilerFlags = 'insertrpmflags'
++compilerFlags = os.environ['CXXFLAGS']
  
  fltkConfig = 'fltk-config'
  
