@@ -1,0 +1,10 @@
+README for plus4emu
+===================
+
+Starting with version 1.2.9, ROMS are distributed with the RPM. The are 
+installed in the /usr/share/plus4emu/roms directory.
+
+When you run the p4makecfg utility to install or reinstall plus4emu 
+configuration files, the ROM image directory will be set to the aforementioned
+directory.
+

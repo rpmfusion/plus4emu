@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Plus4emu
+GenericName=Commodore 264 series emulator
+Comment=Portable emulator of the Commodore 264 family of computers
+Exec=plus4emu
+Icon=plus4emu
+Terminal=false
+Type=Application
+Categories=Game;Emulator;
+

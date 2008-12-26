@@ -1,5 +1,7 @@
+%define binprefix p4
+
 Name:           plus4emu
-Version:        1.2.8.1
+Version:        1.2.9.2
 Release:        1%{?dist}
 Summary:        Portable emulator of the Commodore 264 family of computers
 Group:          Applications/Emulators
@@ -7,8 +9,11 @@ License:        GPLv2+
 URL:            http://plus4emu.sourceforge.net
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:        %{name}.png
-Source2:        README_%{name}.dribble
-Patch0:         %{name}-1.2.7-userpmopts.patch
+Source2:        README_%{name}.Fedora
+Source3:        %{name}.desktop
+Source4:        p4fliconv.desktop
+Source5:        %{binprefix}makecfg.desktop
+Patch0:         %{name}-1.2.9-SConstruct.patch
 Patch1:         %{name}-1.2.5-fixpathissue.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  desktop-file-utils
@@ -28,36 +33,25 @@ quality hardware emulation.
 
 %prep
 %setup -q
-%patch0 -p0
+%patch0 -p1
 %patch1 -p1
-
-# Insert the compiler optflags
-sed -i 's|insertrpmflags|%{optflags}|' SConstruct
 
 # Fix EOL chars
 sed -i 's/\r//' README NEWS
 
 # Rename makecfg to a less generic name to avoid possible conflicts
-sed -i 's|makecfg|%{name}-makecfg|' gui/main.cpp README
+sed -i 's|makecfg|%{binprefix}makecfg|' gui/main.cpp README
+
+# Rename compress to a less generic name to avoid possible conflicts
+sed -i 's|compress -|%{binprefix}compress -|' README
+
+# ROM images are in datadir
+sed -i 's|installDirectory + "roms"|"%{_datadir}/%{name}/roms"|' installer/makecfg.cpp
 
 
 %build
+export CXXFLAGS="%{optflags}"
 scons %{?_smp_mflags}
-
-# Build desktop icon
-cat >%{name}.desktop <<EOF
-[Desktop Entry]
-Encoding=UTF-8
-Name=Plus4emu
-GenericName=Commodore 264 series emulator
-Comment=%{summary}
-Exec=%{name}
-Icon=%{name}
-Terminal=false
-Type=Application
-StartupNotify=false
-Categories=Game;Emulator;
-EOF
 
 
 %install
@@ -65,14 +59,26 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
 install -pm0644 %{SOURCE1} %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
-install -pm0644 %{SOURCE2} README.dribble
-install -pm0755 plus4emu tapconv %{buildroot}%{_bindir}
-install -pm0755 makecfg %{buildroot}%{_bindir}/%{name}-makecfg
+install -pm0644 %{SOURCE2} README.Fedora
+install -pm0755 p4fliconv p4sconv plus4emu tapconv %{buildroot}%{_bindir}
+install -pm0755 makecfg %{buildroot}%{_bindir}/%{binprefix}makecfg
+install -pm0755 compress %{buildroot}%{_bindir}/%{binprefix}compress
 
 desktop-file-install --vendor dribble \
                      --dir %{buildroot}%{_datadir}/applications \
-                     %{name}.desktop
+                     %{SOURCE3}
 
+desktop-file-install --vendor '' \
+                     --dir %{buildroot}%{_datadir}/applications \
+                     %{SOURCE4}
+
+desktop-file-install --vendor '' \
+                     --dir %{buildroot}%{_datadir}/applications \
+                     %{SOURCE5}
+
+# install ROM images
+mkdir -p %{buildroot}%{_datadir}/%{name}/roms
+install -pm0644 roms/* %{buildroot}%{_datadir}/%{name}/roms
 
 %clean
 rm -rf %{buildroot}
@@ -95,12 +101,23 @@ fi
 %files
 %defattr(-,root,root,-)
 %{_bindir}/*
+%{_datadir}/%{name}
 %{_datadir}/icons/hicolor/48x48/apps/%{name}.png
 %{_datadir}/applications/dribble-%{name}.desktop
-%doc README COPYING NEWS README.dribble
+%{_datadir}/applications/p4fliconv.desktop
+%{_datadir}/applications/%{binprefix}makecfg.desktop
+%doc README COPYING NEWS README.Fedora
 
 
 %changelog
+* Thu Dec 25 2008 Andrea Musuruane <musuruan@gmail.com> 1.2.9.2-1
+- Updated to upstream 1.2.9.2
+- Moved to RPM Fusion nonfree
+- ROM images are now shippend in the source and therefore packaged
+- Fixed sources to read ROM images from datadir
+- Desktop files are no longer generated in the spec file
+- Renamed README.dribble in README.Fedora
+
 * Thu Jul 24 2008 Andrea Musuruane <musuruan@gmail.com> 1.2.8.1-1
 - Updated to upstream 1.2.8.1
 

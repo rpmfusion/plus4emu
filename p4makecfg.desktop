@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Plus4emu config
+Comment=Reinstall Plus4emu configuration files
+Exec=p4makecfg
+Icon=plus4emu
+Terminal=false
+Type=Application
+Categories=Game;Emulator;
+
