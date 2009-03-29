@@ -2,7 +2,7 @@
 
 Name:           plus4emu
 Version:        1.2.9.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Portable emulator of the Commodore 264 family of computers
 Group:          Applications/Emulators
 License:        GPLv2+
@@ -110,6 +110,9 @@ fi
 
 
 %changelog
+* Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.2.9.2-2
+- rebuild for new F11 features
+
 * Thu Dec 25 2008 Andrea Musuruane <musuruan@gmail.com> 1.2.9.2-1
 - Updated to upstream 1.2.9.2
 - Moved to RPM Fusion nonfree
