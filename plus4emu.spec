@@ -2,7 +2,7 @@
 
 Name:           plus4emu
 Version:        1.2.9.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Portable emulator of the Commodore 264 family of computers
 Group:          Applications/Emulators
 License:        GPLv2+
@@ -110,6 +110,9 @@ fi
 
 
 %changelog
+* Thu Feb 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.2.9.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
 * Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.2.9.2-2
 - rebuild for new F11 features
 
