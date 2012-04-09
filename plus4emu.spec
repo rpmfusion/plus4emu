@@ -2,7 +2,7 @@
 
 Name:           plus4emu
 Version:        1.2.9.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Portable emulator of the Commodore 264 family of computers
 Group:          Applications/Emulators
 License:        GPLv2+
@@ -15,6 +15,8 @@ Source4:        p4fliconv.desktop
 Source5:        %{binprefix}makecfg.desktop
 Patch0:         %{name}-1.2.9-SConstruct.patch
 Patch1:         %{name}-1.2.5-fixpathissue.patch
+Patch2:         %{name}-1.2.9.2-gcc45.patch
+Patch3:         %{name}-1.2.9.2-gcc46.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  desktop-file-utils
 BuildRequires:  fltk-fluid >= 1.1.0
@@ -35,6 +37,8 @@ quality hardware emulation.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 # Fix EOL chars
 sed -i 's/\r//' README NEWS
@@ -110,6 +114,10 @@ fi
 
 
 %changelog
+* Mon Apr 09 2012 Andrea Musuruane <musuruan@gmail.com> 1.2.9.2-5
+- Made a new patch to compile with GCC 4.5
+- Made a new patch to compile with GCC 4.6
+
 * Thu Mar 08 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.2.9.2-4
 - Rebuilt for c++ ABI breakage
 

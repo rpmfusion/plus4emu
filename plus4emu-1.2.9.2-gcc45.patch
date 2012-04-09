@@ -1,0 +1,24 @@
+diff -durN plus4emu-1.2.9.2.orig/util/compress/compress0.cpp plus4emu-1.2.9.2/util/compress/compress0.cpp
+--- plus4emu-1.2.9.2.orig/util/compress/compress0.cpp	2008-09-25 00:03:19.000000000 +0200
++++ plus4emu-1.2.9.2/util/compress/compress0.cpp	2010-11-11 18:21:20.123173434 +0100
+@@ -604,7 +604,7 @@
+     optimizeMatchDistanceRepeats = r.optimizeMatchDistanceRepeats;
+   }
+ 
+-  Compressor_M0::CompressionParameters::CompressionParameters&
++  Compressor_M0::CompressionParameters&
+       Compressor_M0::CompressionParameters::operator=(
+           const CompressionParameters& r)
+   {
+diff -durN plus4emu-1.2.9.2.orig/util/compress/compress1.cpp plus4emu-1.2.9.2/util/compress/compress1.cpp
+--- plus4emu-1.2.9.2.orig/util/compress/compress1.cpp	2008-09-26 15:00:31.000000000 +0200
++++ plus4emu-1.2.9.2/util/compress/compress1.cpp	2010-11-11 18:16:38.980633378 +0100
+@@ -924,7 +924,7 @@
+       splitOptimizationDepth = 9;
+   }
+ 
+-  Compressor_M1::CompressionParameters::CompressionParameters&
++  Compressor_M1::CompressionParameters&
+       Compressor_M1::CompressionParameters::operator=(
+           const CompressionParameters& r)
+   {
