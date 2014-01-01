@@ -2,9 +2,8 @@
 
 Name:           plus4emu
 Version:        1.2.9.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Portable emulator of the Commodore 264 family of computers
-Group:          Applications/Emulators
 License:        GPLv2+
 URL:            http://plus4emu.sourceforge.net
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
@@ -17,11 +16,15 @@ Patch0:         %{name}-1.2.9-SConstruct.patch
 Patch1:         %{name}-1.2.5-fixpathissue.patch
 Patch2:         %{name}-1.2.9.2-gcc45.patch
 Patch3:         %{name}-1.2.9.2-gcc46.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Patch4:         %{name}-1.2.9.2-compat-lua.patch
 BuildRequires:  desktop-file-utils
 BuildRequires:  fltk-fluid >= 1.1.0
 BuildRequires:  libsndfile-devel
+%if 0%{?fedora} >= 20
+BuildRequires:  compat-lua-devel
+%else
 BuildRequires:  lua-devel
+%endif
 BuildRequires:  portaudio-devel >= 18
 BuildRequires:  scons
 BuildRequires:  SDL-devel
@@ -39,6 +42,7 @@ quality hardware emulation.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 # Fix EOL chars
 sed -i 's/\r//' README NEWS
@@ -59,7 +63,6 @@ scons %{?_smp_mflags}
 
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
 install -pm0644 %{SOURCE1} %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
@@ -68,52 +71,53 @@ install -pm0755 p4fliconv p4sconv plus4emu tapconv %{buildroot}%{_bindir}
 install -pm0755 makecfg %{buildroot}%{_bindir}/%{binprefix}makecfg
 install -pm0755 compress %{buildroot}%{_bindir}/%{binprefix}compress
 
-desktop-file-install --vendor dribble \
-                     --dir %{buildroot}%{_datadir}/applications \
+desktop-file-install --dir %{buildroot}%{_datadir}/applications \
                      %{SOURCE3}
 
-desktop-file-install --vendor '' \
-                     --dir %{buildroot}%{_datadir}/applications \
+desktop-file-install --dir %{buildroot}%{_datadir}/applications \
                      %{SOURCE4}
 
-desktop-file-install --vendor '' \
-                     --dir %{buildroot}%{_datadir}/applications \
+desktop-file-install --dir %{buildroot}%{_datadir}/applications \
                      %{SOURCE5}
 
 # install ROM images
 mkdir -p %{buildroot}%{_datadir}/%{name}/roms
 install -pm0644 roms/* %{buildroot}%{_datadir}/%{name}/roms
 
-%clean
-rm -rf %{buildroot}
-
 
 %post
-touch --no-create %{_datadir}/icons/hicolor
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-fi
+/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %postun
-touch --no-create %{_datadir}/icons/hicolor
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+if [ $1 -eq 0 ] ; then
+    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
 
 
+%posttrans
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+
+
 %files
-%defattr(-,root,root,-)
 %{_bindir}/*
 %{_datadir}/%{name}
 %{_datadir}/icons/hicolor/48x48/apps/%{name}.png
-%{_datadir}/applications/dribble-%{name}.desktop
+%{_datadir}/applications/%{name}.desktop
 %{_datadir}/applications/p4fliconv.desktop
 %{_datadir}/applications/%{binprefix}makecfg.desktop
 %doc README COPYING NEWS README.Fedora
 
 
 %changelog
+* Tue Dec 31 2013 Andrea Musuruane <musuruan@gmail.com> 1.2.9.2-7
+- Built with compat-lua for F20+
+- Dropped desktop vendor tag for F19+
+- Updated icon cache scriptlets
+- Dropped obsolete Group, Buildroot, %%clean and %%defattr
+- Dropped cleaning at the beginning of %%install
+
 * Tue Mar 12 2013 Nicolas Chauvet <kwizart@gmail.com> - 1.2.9.2-6
 - https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
@@ -157,7 +161,7 @@ fi
 * Sun Feb 03 2008 Ian Chapman <packages[AT]amiga-hardware.com> 1.2.5-3
 - GCC 4.3 fixes
 
-* Sun Jan 21 2008 Ian Chapman <packages[AT]amiga-hardware.com> 1.2.5-2
+* Sun Jan 20 2008 Ian Chapman <packages[AT]amiga-hardware.com> 1.2.5-2
 - Dropped fltk-devel BR, fltk-fluid pulls it in anyway
 - Minor cleanups
 
