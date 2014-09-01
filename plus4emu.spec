@@ -2,7 +2,7 @@
 
 Name:           plus4emu
 Version:        1.2.9.2
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Portable emulator of the Commodore 264 family of computers
 License:        GPLv2+
 URL:            http://plus4emu.sourceforge.net
@@ -111,6 +111,9 @@ fi
 
 
 %changelog
+* Mon Sep 01 2014 Sérgio Basto <sergio@serjux.com> - 1.2.9.2-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
+
 * Tue Dec 31 2013 Andrea Musuruane <musuruan@gmail.com> 1.2.9.2-7
 - Built with compat-lua for F20+
 - Dropped desktop vendor tag for F19+
