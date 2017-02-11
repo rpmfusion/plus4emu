@@ -1,0 +1,22 @@
+diff -durN plus4emu-1.2.10.orig/SConstruct plus4emu-1.2.10/SConstruct
+--- plus4emu-1.2.10.orig/SConstruct	2017-02-05 19:27:24.000000000 +0100
++++ plus4emu-1.2.10/SConstruct	2017-02-06 17:12:08.409841846 +0100
+@@ -20,17 +20,7 @@
+                                          mingwCrossCompile)))
+ enableBuildCache = int(ARGUMENTS.get('cache', 0))
+ 
+-compilerFlags = ''
+-if buildRelease:
+-    if linux32CrossCompile or (mingwCrossCompile and not win64CrossCompile):
+-        compilerFlags = ' -march=pentium2 '
+-if enableDebug and not buildRelease:
+-    compilerFlags = ' -Wno-long-long -Wshadow -g -O0 ' + compilerFlags
+-    compilerFlags = ' -Wall -W -ansi -pedantic ' + compilerFlags
+-else:
+-    compilerFlags = ' -Wall -O3 ' + compilerFlags + ' -mtune=generic '
+-    compilerFlags = compilerFlags + ' -fno-inline-functions '
+-    compilerFlags = compilerFlags + ' -fomit-frame-pointer -ffast-math '
++compilerFlags = os.environ['CXXFLAGS']
+ 
+ # -----------------------------------------------------------------------------
+ 

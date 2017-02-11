@@ -1,33 +1,24 @@
-%define binprefix p4
-
 Name:           plus4emu
-Version:        1.2.9.2
-Release:        8%{?dist}
+Version:        1.2.10
+Release:        1%{?dist}
 Summary:        Portable emulator of the Commodore 264 family of computers
 License:        GPLv2+
-URL:            http://plus4emu.sourceforge.net
-Source0:        http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
-Source1:        %{name}.png
-Source2:        README_%{name}.Fedora
-Source3:        %{name}.desktop
-Source4:        p4fliconv.desktop
-Source5:        %{binprefix}makecfg.desktop
-Patch0:         %{name}-1.2.9-SConstruct.patch
+URL:            https://github.com/istvan-v/plus4emu
+Source0:        https://github.com/istvan-v/plus4emu/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source1:        README_%{name}.Fedora
+Source2:        p4fliconv.desktop
+Source3:        p4makecfg.desktop
+Patch0:         %{name}-1.2.10-SConstruct.patch
 Patch1:         %{name}-1.2.5-fixpathissue.patch
-Patch2:         %{name}-1.2.9.2-gcc45.patch
-Patch3:         %{name}-1.2.9.2-gcc46.patch
-Patch4:         %{name}-1.2.9.2-compat-lua.patch
 BuildRequires:  desktop-file-utils
-BuildRequires:  fltk-fluid >= 1.1.0
+BuildRequires:  fltk-fluid
 BuildRequires:  libsndfile-devel
-%if 0%{?fedora} >= 20
-BuildRequires:  compat-lua-devel
-%else
 BuildRequires:  lua-devel
-%endif
-BuildRequires:  portaudio-devel >= 18
+BuildRequires:  portaudio-devel
 BuildRequires:  scons
 BuildRequires:  SDL-devel
+BuildRequires:  libXcursor-devel
+BuildRequires:  libXinerama-devel
 Requires:       hicolor-icon-theme
 
 %description
@@ -40,18 +31,14 @@ quality hardware emulation.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
+
+# Remove fltk_jpeg, fltk_png, and fltk_z libraries from SConstruct
+sed -i 's/ -lfltk_jpeg//' SConstruct
+sed -i 's/ -lfltk_png//' SConstruct
+sed -i 's/ -lfltk_z//' SConstruct
 
 # Fix EOL chars
 sed -i 's/\r//' README NEWS
-
-# Rename makecfg to a less generic name to avoid possible conflicts
-sed -i 's|makecfg|%{binprefix}makecfg|' gui/main.cpp README
-
-# Rename compress to a less generic name to avoid possible conflicts
-sed -i 's|compress -|%{binprefix}compress -|' README
 
 # ROM images are in datadir
 sed -i 's|installDirectory + "roms"|"%{_datadir}/%{name}/roms"|' installer/makecfg.cpp
@@ -59,26 +46,32 @@ sed -i 's|installDirectory + "roms"|"%{_datadir}/%{name}/roms"|' installer/makec
 
 %build
 export CXXFLAGS="%{optflags}"
-scons %{?_smp_mflags}
+# Use nopkgconfig=1 to disable package checking because it fails on Fedora
+scons %{?_smp_mflags} \
+  VERBOSE=1 \
+  nopkgconfig=1 \
+  debug=1 
 
 
 %install
 mkdir -p %{buildroot}%{_bindir}
-mkdir -p %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
-install -pm0644 %{SOURCE1} %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
-install -pm0644 %{SOURCE2} README.Fedora
-install -pm0755 p4fliconv p4sconv plus4emu tapconv %{buildroot}%{_bindir}
-install -pm0755 makecfg %{buildroot}%{_bindir}/%{binprefix}makecfg
-install -pm0755 compress %{buildroot}%{_bindir}/%{binprefix}compress
+install -pm0755 p4compress p4fliconv p4makecfg p4sconv p4tapconv plus4emu \
+  %{buildroot}%{_bindir}
+
+mkdir -p %{buildroot}%{_datadir}/icons/hicolor/32x32/apps
+install -pm0644 resource/Cbm4.png \
+  %{buildroot}%{_datadir}/icons/hicolor/32x32/apps
+
+install -pm0644 %{SOURCE1} README.Fedora
 
 desktop-file-install --dir %{buildroot}%{_datadir}/applications \
-                     %{SOURCE3}
+  resource/plus4emu.desktop
 
 desktop-file-install --dir %{buildroot}%{_datadir}/applications \
-                     %{SOURCE4}
+  %{SOURCE2}
 
 desktop-file-install --dir %{buildroot}%{_datadir}/applications \
-                     %{SOURCE5}
+  %{SOURCE3}
 
 # install ROM images
 mkdir -p %{buildroot}%{_datadir}/%{name}/roms
@@ -103,14 +96,19 @@ fi
 %files
 %{_bindir}/*
 %{_datadir}/%{name}
-%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
+%{_datadir}/icons/hicolor/*/apps/Cbm4.png
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/applications/p4fliconv.desktop
-%{_datadir}/applications/%{binprefix}makecfg.desktop
-%doc README COPYING NEWS README.Fedora
+%{_datadir}/applications/p4makecfg.desktop
+%doc README NEWS README.Fedora
+%license COPYING resource/Read_me.txt
 
 
 %changelog
+* Sat Feb 11 2017 Andrea Musuruane <musuruan@gmail.com> 1.2.10-1
+- Updated to upstream 1.2.10
+- Updated URL and Source0
+
 * Mon Sep 01 2014 Sérgio Basto <sergio@serjux.com> - 1.2.9.2-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
