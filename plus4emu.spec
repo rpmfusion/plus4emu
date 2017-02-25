@@ -1,5 +1,5 @@
 Name:           plus4emu
-Version:        1.2.10
+Version:        1.2.10.1
 Release:        1%{?dist}
 Summary:        Portable emulator of the Commodore 264 family of computers
 License:        GPLv2+
@@ -105,6 +105,9 @@ fi
 
 
 %changelog
+* Thu Feb 23 2017 Andrea Musuruane <musuruan@gmail.com> 1.2.10.1-1
+- Updated to upstream 1.2.10.1
+
 * Sat Feb 11 2017 Andrea Musuruane <musuruan@gmail.com> 1.2.10-1
 - Updated to upstream 1.2.10
 - Updated URL and Source0
