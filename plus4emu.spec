@@ -1,6 +1,6 @@
 Name:           plus4emu
 Version:        1.2.10.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Portable emulator of the Commodore 264 family of computers
 License:        GPLv2+
 URL:            https://github.com/istvan-v/plus4emu
@@ -105,6 +105,9 @@ fi
 
 
 %changelog
+* Sun Aug 19 2018 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.2.10.1-6
+- Rebuilt for Fedora 29 Mass Rebuild binutils issue
+
 * Fri Jul 27 2018 RPM Fusion Release Engineering <sergio@serjux.com> - 1.2.10.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
