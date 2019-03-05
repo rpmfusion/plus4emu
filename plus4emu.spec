@@ -10,6 +10,7 @@ Source2:        p4fliconv.desktop
 Source3:        p4makecfg.desktop
 Patch0:         %{name}-1.2.10-SConstruct.patch
 Patch1:         %{name}-1.2.5-fixpathissue.patch
+BuildRequires:  gcc-c++
 BuildRequires:  desktop-file-utils
 BuildRequires:  fltk-fluid
 BuildRequires:  libsndfile-devel
