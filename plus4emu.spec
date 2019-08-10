@@ -16,7 +16,7 @@ BuildRequires:  fltk-fluid
 BuildRequires:  libsndfile-devel
 BuildRequires:  lua-devel
 BuildRequires:  portaudio-devel
-BuildRequires:  scons
+BuildRequires:  python2-scons
 BuildRequires:  SDL-devel
 BuildRequires:  libXcursor-devel
 BuildRequires:  libXinerama-devel
@@ -48,7 +48,7 @@ sed -i 's|installDirectory + "roms"|"%{_datadir}/%{name}/roms"|' installer/makec
 %build
 export CXXFLAGS="%{optflags}"
 # Use nopkgconfig=1 to disable package checking because it fails on Fedora
-scons %{?_smp_mflags} \
+scons-2 %{?_smp_mflags} \
   VERBOSE=1 \
   nopkgconfig=1 \
   debug=1 
