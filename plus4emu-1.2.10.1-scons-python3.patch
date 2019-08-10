@@ -1,0 +1,70 @@
+--- plus4emu-1.2.10.1.orig/SConstruct	2017-02-22 12:47:43.000000000 +0100
++++ plus4emu-1.2.10.1/SConstruct	2019-08-10 13:40:56.829682387 +0200
+@@ -77,17 +77,17 @@
+     if not disablePkgConfig:
+         for s in packageConfigs[pkgName][1]:
+             if not s:
+-                print 'Checking for package ' + pkgName + '...',
++                print('Checking for package ' + pkgName + '...', end = '')
+                 # hack to work around fltk-config adding unwanted compiler flags
+                 savedCFlags = env['CCFLAGS']
+                 savedCXXFlags = env['CXXFLAGS']
+             else:
+-                print 'Checking for package ' + s + '...',
++                print('Checking for package ' + s + '...', end = '')
+                 s = ' ' + s
+             try:
+                 if not env.ParseConfig(packageConfigs[pkgName][0] + s):
+                     raise Exception()
+-                print 'yes'
++                print('yes')
+                 if not s:
+                     env['CCFLAGS'] = savedCFlags
+                     env['CXXFLAGS'] = savedCXXFlags
+@@ -95,7 +95,7 @@
+                         env['CPPDEFINES'].remove(['_FORTIFY_SOURCE', '2'])
+                 return 1
+             except:
+-                print 'no'
++                print('no')
+                 continue
+         pkgFound = 0
+     else:
+@@ -110,9 +110,9 @@
+                 packageConfigs[pkgName][2 + int(bool(mingwCrossCompile))])
+     if not pkgFound:
+         if not packageConfigs[pkgName][6]:
+-            print ' *** error configuring ' + pkgName
++            print(' *** error configuring ' + pkgName)
+             Exit(-1)
+-        print 'WARNING: package ' + pkgName + ' not found'
++        print('WARNING: package ' + pkgName + ' not found')
+         return 0
+     return 1
+ 
+@@ -218,14 +218,14 @@
+             if not configure.CheckType('PFNGLCOMPILESHADERPROC',
+                                        '#include <GL/gl.h>\n'
+                                        + '#include <GL/glext.h>'):
+-                print 'WARNING: disabling GL shader support'
++                print('WARNING: disabling GL shader support')
+                 enableGLShaders = 0
+     configure.Finish()
+ if sys.platform[:5] == 'linux' and not mingwCrossCompile:
+     plus4emuGUIEnvironment.Append(LIBS = ['X11'])
+     plus4emuGLGUIEnvironment.Append(LIBS = ['GL', 'X11'])
+ if disableOpenGL:
+-    print 'WARNING: OpenGL is not found, only software video will be supported'
++    print('WARNING: OpenGL is not found, only software video will be supported')
+     enableGLShaders = 0
+     plus4emuGLGUIEnvironment = plus4emuGUIEnvironment.Clone()
+     plus4emuGLGUIEnvironment.Append(CCFLAGS = ['-DDISABLE_OPENGL_DISPLAY'])
+@@ -264,7 +264,7 @@
+     havePortAudioV19 = 1
+ else:
+     havePortAudioV19 = 0
+-    print 'WARNING: using old v18 PortAudio interface'
++    print('WARNING: using old v18 PortAudio interface')
+ fltkVersion13 = 0
+ if configure.CheckCXXHeader('FL/Fl_Cairo.H'):
+     fltkVersion13 = 1

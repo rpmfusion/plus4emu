@@ -1,6 +1,6 @@
 Name:           plus4emu
 Version:        1.2.10.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Portable emulator of the Commodore 264 family of computers
 License:        GPLv2+
 URL:            https://github.com/istvan-v/plus4emu
@@ -8,15 +8,17 @@ Source0:        https://github.com/istvan-v/plus4emu/archive/%{version}.tar.gz#/
 Source1:        README_%{name}.Fedora
 Source2:        p4fliconv.desktop
 Source3:        p4makecfg.desktop
-Patch0:         %{name}-1.2.10-SConstruct.patch
-Patch1:         %{name}-1.2.5-fixpathissue.patch
+Patch0:         %{name}-1.2.10.1-scons-python3.patch
+Patch1:         %{name}-1.2.10-SConstruct.patch
+Patch2:         %{name}-1.2.5-fixpathissue.patch
+
 BuildRequires:  gcc-c++
 BuildRequires:  desktop-file-utils
 BuildRequires:  fltk-fluid
 BuildRequires:  libsndfile-devel
 BuildRequires:  lua-devel
 BuildRequires:  portaudio-devel
-BuildRequires:  python2-scons
+BuildRequires:  scons
 BuildRequires:  SDL-devel
 BuildRequires:  libXcursor-devel
 BuildRequires:  libXinerama-devel
@@ -29,9 +31,7 @@ quality hardware emulation.
 
 
 %prep
-%setup -q
-%patch0 -p1
-%patch1 -p1
+%autosetup -p1
 
 # Remove fltk_jpeg, fltk_png, and fltk_z libraries from SConstruct
 sed -i 's/ -lfltk_jpeg//' SConstruct
@@ -46,9 +46,9 @@ sed -i 's|installDirectory + "roms"|"%{_datadir}/%{name}/roms"|' installer/makec
 
 
 %build
-export CXXFLAGS="%{optflags}"
+%set_build_flags
 # Use nopkgconfig=1 to disable package checking because it fails on Fedora
-scons-2 %{?_smp_mflags} \
+scons %{?_smp_mflags} \
   VERBOSE=1 \
   nopkgconfig=1 \
   debug=1 
@@ -79,21 +79,6 @@ mkdir -p %{buildroot}%{_datadir}/%{name}/roms
 install -pm0644 roms/* %{buildroot}%{_datadir}/%{name}/roms
 
 
-%post
-/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-
-
-%postun
-if [ $1 -eq 0 ] ; then
-    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-
-
-%posttrans
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-
-
 %files
 %{_bindir}/*
 %{_datadir}/%{name}
@@ -106,6 +91,11 @@ fi
 
 
 %changelog
+* Sat Aug 10 2019 Andrea Musuruane <musuruan@gmail.com> - 1.2.10.1-9
+- Fixed building with python3 scons (BZ #5344)
+- Used %%set_build_flags macro
+- Removed desktop scriptlets
+
 * Sat Aug 10 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.2.10.1-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
