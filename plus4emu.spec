@@ -1,6 +1,6 @@
 Name:           plus4emu
 Version:        1.2.10.1
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Portable emulator of the Commodore 264 family of computers
 License:        GPLv2+
 URL:            https://github.com/istvan-v/plus4emu
@@ -18,7 +18,7 @@ BuildRequires:  fltk-fluid
 BuildRequires:  libsndfile-devel
 BuildRequires:  lua-devel
 BuildRequires:  portaudio-devel
-BuildRequires:  scons
+BuildRequires:  python3-scons
 BuildRequires:  SDL-devel
 BuildRequires:  libXcursor-devel
 BuildRequires:  libXinerama-devel
@@ -91,6 +91,9 @@ install -pm0644 roms/* %{buildroot}%{_datadir}/%{name}/roms
 
 
 %changelog
+* Sat Feb 08 2020 Andrea Musuruane <musuruan@gmail.com> - 1.2.10.1-11
+- Fix FTBFS for F32
+
 * Wed Feb 05 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.2.10.1-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
